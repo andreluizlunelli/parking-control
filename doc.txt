@@ -1,0 +1,22 @@
+como vai funcionar: 
+- a pessoa define um preço default e pode adicionar várias datas com várias cobranças;
+
+
+class static configuraçãosistema {
+	toleranciaMinutos
+	preçoEstacionamento
+}
+
+objeto controlevigencia {
+	dataInicio
+	dataFim
+	preço
+}
+
+objeto entradaveiculo {
+	dataEntrada
+	dataSaida
+	placa
+	valorCobrado
+}
+

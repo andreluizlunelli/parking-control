@@ -58,4 +58,19 @@ namespace parking_control.Service
         }
     }
 
+    public class ManagerVehicle
+    {
+        private static Dictionary<string, VehicleEntrance> DictVehicle = new Dictionary<string, VehicleEntrance>();
+
+        public static void AddVehicle(VehicleEntrance vehicle)
+        {
+            DictVehicle.Add(vehicle.Board, vehicle);
+        }
+
+        public static VehicleEntrance GeyVehicle(string board)
+        {
+            return DictVehicle[board];
+        }
+    }
+
 }

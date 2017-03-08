@@ -41,8 +41,20 @@ namespace parking_control.Service
 
         public static double GetPriceByDate(DateTime dateTime)
         {
-            ValidityDateControl filtered = listDates.Where((ValidityDateControl vdc) => { return dateTime >= vdc.InitialDate; }).First();            
+            ValidityDateControl filtered;
+            try
+            {
+                filtered = listDates.Where((ValidityDateControl vdc) => { return dateTime >= vdc.InitialDate; }).First();
+            }
+            catch (InvalidOperationException e)
+            {                
+                throw new NotFoundDateControl();
+            }            
             return filtered.HourPrice;
         }
+    }
+
+    public class NotFoundDateControl : Exception
+    {
     }
 }

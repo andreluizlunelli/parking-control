@@ -54,7 +54,7 @@ namespace parking_control.Tests.Service
                 ValidityControl.GetPriceByDate(new DateTime(2015, 8, 17, 0, 0, 0));
                 Assert.Fail("Não lançou a exception");
             }
-            catch (InvalidOperationException e)
+            catch (NotFoundDateControl e)
             {
                 Assert.IsTrue(true);
             }

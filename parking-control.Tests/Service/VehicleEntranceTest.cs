@@ -20,42 +20,17 @@ namespace parking_control.Tests.Service
 
         [TestMethod]
         public void StayTimeReturnDateOutInvalidTest()
-        {
-            VehicleEntrance entrance = GetVehicleTest();
+        {            
             try
             {
-                entrance.StayTime();
+                VehicleEntrance entrance = GetVehicleTest();                
                 Assert.Fail("Deveria ter lançado uma ArgumentException");
             }
-            catch (ArgumentException e)
+            catch (NotFoundDateControl e)
             {
                 Assert.IsTrue(true);                
             }                                    
-        }
-
-        [TestMethod]
-        public void StayTimeReturn30MinuteTest()
-        {
-            VehicleEntrance entrance = GetVehicleTest();
-            entrance.DateOut = new DateTime(2015, 9, 25, 16, 0, 0);
-            int time = entrance.StayTime();
-            Assert.IsTrue(time == 30, "Não está calculando corretamente a duração");
-        }
-
-        [TestMethod]
-        public void GetPriceMinuteOutNullRaiseExceptionTest()
-        {
-            VehicleEntrance entrance = GetVehicleTest();            
-            try
-            {
-                double price = entrance.PriceCharged;
-                Assert.Fail("Deveria ter lançado uma ArgumentException");
-            }
-            catch (ArgumentException e)
-            {
-                Assert.IsTrue(true);
-            }
-        }
+        }                
 
         [TestMethod]
         public void GetPriceMinuteTest()
@@ -88,6 +63,28 @@ namespace parking_control.Tests.Service
             Assert.AreEqual(15, vehicleTest.PriceCharged);
 
         }
-
     }
+
+    [TestClass]
+    public class ManagerVehicleTest
+    {
+
+        [TestMethod]
+        public void SetVehicleListTest()
+        {
+            DateTime initialDateControl = new DateTime(2015, 8, 16, 0, 0, 0);
+            DateTime finalDateControl = new DateTime(2015, 11, 15, 23, 59, 59);
+            double hourPrice = 5;
+            ValidityControl.AddDateControl(hourPrice, initialDateControl, finalDateControl);
+
+            string board = "ABC 8801";
+            DateTime dateIn = new DateTime(2015, 9, 25, 15, 30, 0);
+            VehicleEntrance vehicle = new VehicleEntrance(board, dateIn);
+
+            ManagerVehicle.AddVehicle(vehicle);
+            Assert.AreEqual(vehicle, ManagerVehicle.GeyVehicle(vehicle.Board));
+        }
+    }
+
+    
 }

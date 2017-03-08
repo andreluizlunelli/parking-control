@@ -26,7 +26,7 @@ namespace parking_control.Service
         public static void AddDateControl(double price, DateTime initialDateControl, DateTime finalDateControl)
         {
             ValidityDateControl validityDateControl = new ValidityDateControl(price, initialDateControl, finalDateControl);
-            listDates.Add(validityDateControl);
+            listDates.Add(validityDateControl);            
         }
 
         public static List<ValidityDateControl> GetListDates()
@@ -34,9 +34,10 @@ namespace parking_control.Service
             return listDates;
         }
 
-        public static void GetPrice(VehicleEntrance entrance)
+        public static double GetPriceByDate(DateTime dateTime)
         {
-            entrance.StayTime();
+            ValidityDateControl filtered = listDates.Where((ValidityDateControl vdc) => { return dateTime >= vdc.InitialDate; }).First();            
+            return filtered.HourPrice;
         }
     }
 }

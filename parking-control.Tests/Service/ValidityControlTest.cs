@@ -12,7 +12,7 @@ namespace parking_control.Tests.Service
     public class ValidityControlTest
     {
         [TestMethod]
-        public void SetPrice01()
+        public void SetPriceTest()
         {
             DateTime initialDateControl = new DateTime(2015, 8, 16, 0, 0, 0);
             DateTime finalDateControl = new DateTime(2015, 11, 15, 23, 59, 59);
@@ -28,20 +28,29 @@ namespace parking_control.Tests.Service
 
         }
 
-        public void ReturnPrice01()
+        [TestMethod]
+        public void GetPriceByDateTest()
         {
             DateTime initialDateControl = new DateTime(2015, 8, 16, 0, 0, 0);
             DateTime finalDateControl = new DateTime(2015, 11, 15, 23, 59, 59);
-            double hourPrice = 2;
-            ValidityControl.AddDateControl(hourPrice, initialDateControl, finalDateControl);
+            double price = 5;
+            ValidityControl.AddDateControl(price, initialDateControl, finalDateControl);
 
-            string board = "ABC 8801";
-            DateTime dateIn = new DateTime(2015, 9, 25, 15, 30, 0);            
-            VehicleEntrance entrance = new VehicleEntrance(board, dateIn);
-            entrance.DateOut = new DateTime(2015, 9, 25, 16, 0, 0);
+            initialDateControl = new DateTime(2015, 8, 18, 0, 0, 0);
+            finalDateControl = new DateTime(2015, 11, 15, 23, 59, 59);
+            price = 9;
+            ValidityControl.AddDateControl(price, initialDateControl, finalDateControl);
 
-            ValidityControl.GetPrice(entrance);
-            Assert.IsTrue(entrance.PriceCharged == 1, "Erro ao calcular o preço, deveria ser 1, retornado: "+entrance.PriceCharged);
+            double returnedPrice = ValidityControl.GetPriceByDate(new DateTime(2015, 8, 17, 0, 0, 0));
+            Assert.AreEqual(5, returnedPrice);
         }
-    }
+
+        [TestMethod]
+        public void GetPriceByDateRaiseExceptionTest()
+        {
+            ValidityControl.GetPriceByDate(new DateTime(2015, 8, 17, 0, 0, 0));
+            // lança uma exceção se não tiver nada
+
+            // se já tiver alguma, indica que a anterior pode ser extendida o prazo
+        }
 }

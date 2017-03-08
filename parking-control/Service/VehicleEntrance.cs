@@ -17,17 +17,29 @@ namespace parking_control.Service
         public string Board { get; set; }
         public DateTime DateIn { get; set; }
         public DateTime DateOut { get; set; }
-        public double PriceCharged { get; set; }
+        public double PriceCharged { get { return GetPriceCharged(); } }
+
+        private double GetPriceCharged()
+        {
+            if (InvalidDatetime(DateOut))            
+                throw new ArgumentException();
+            
+            int stayTime = StayTime();
+            if (stayTime <= 30)
+            {
+                return 1;
+            }            
+            return 0;
+        }
 
         // int is minute
         public int StayTime()
         {                        
-            if (InvalidDatetime(DateOut))
-            {
+            if (InvalidDatetime(DateOut))            
                 throw new ArgumentException();
-            }
+            
             return (DateOut - DateIn).Minutes;
-        }
+        }        
 
         private bool InvalidDatetime(DateTime time)
         {

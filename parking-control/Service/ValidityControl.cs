@@ -34,6 +34,11 @@ namespace parking_control.Service
             return listDates;
         }
 
+        public static void ClearListDates()
+        {
+            listDates.Clear();
+        }
+
         public static double GetPriceByDate(DateTime dateTime)
         {
             ValidityDateControl filtered = listDates.Where((ValidityDateControl vdc) => { return dateTime >= vdc.InitialDate; }).First();            

@@ -12,24 +12,35 @@ namespace parking_control.Service
         {
             Board = board;
             DateIn = dateIn;
+            HourPrice = ValidityControl.GetPriceByDate(dateIn);
         }
 
-        public string Board { get; set; }
+        public double HourPrice { get; private set; }
+        public string Board { get; private set; }
         public DateTime DateIn { get; set; }
         public DateTime DateOut { get; set; }
-        public double PriceCharged { get { return GetPriceCharged(); } }
+        public double PriceCharged => GetPriceCharged();
 
+        // metodo não utiliza os segundos para o calculo
         private double GetPriceCharged()
         {
             if (InvalidDatetime(DateOut))            
                 throw new ArgumentException();
-            
-            int stayTime = StayTime();
-            if (stayTime <= 30)
+
+            TimeSpan diff = (DateOut - DateIn);
+            if (StayTime() <= 30)
             {
-                return 1;
+                return HourPrice / 2;
+            }
+            else if (diff.Minutes <= 10)
+            {                
+                return HourPrice * diff.Hours;
+            }
+            else if (diff.Minutes > 10)
+            {
+                return HourPrice * (diff.Hours + 1);
             }            
-            return 0;
+            return HourPrice * diff.Hours;
         }
 
         // int is minute
@@ -38,7 +49,7 @@ namespace parking_control.Service
             if (InvalidDatetime(DateOut))            
                 throw new ArgumentException();
             
-            return (DateOut - DateIn).Minutes;
+            return (int) (DateOut - DateIn).TotalMinutes;
         }        
 
         private bool InvalidDatetime(DateTime time)

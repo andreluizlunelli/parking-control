@@ -58,20 +58,36 @@ namespace parking_control.Tests.Service
         }
 
         [TestMethod]
-        public void GetPrice15MinuteTest()
+        public void GetPriceMinuteTest()
         {
             DateTime initialDateControl = new DateTime(2015, 8, 16, 0, 0, 0);
             DateTime finalDateControl = new DateTime(2015, 11, 15, 23, 59, 59);
-            double hourPrice = 2;
+            double hourPrice = 5;
             ValidityControl.AddDateControl(hourPrice, initialDateControl, finalDateControl);
 
             VehicleEntrance vehicleTest = GetVehicleTest();
-            vehicleTest.DateOut = new DateTime(2015, 9, 25, 15, 45, 0);
-            Assert.AreEqual(1, vehicleTest.PriceCharged);            
+            vehicleTest.DateOut = new DateTime(2015, 9, 25, 15, 45, 0); // 15m
+            Assert.AreEqual(2.5, vehicleTest.PriceCharged);
 
-            ValidityControl.GetListDates()[0].HourPrice = 3;
-            Assert.AreEqual(1.5, vehicleTest.PriceCharged);
+            vehicleTest.DateOut = new DateTime(2015, 9, 25, 16, 0, 0); // 30m
+            Assert.AreEqual(2.5, vehicleTest.PriceCharged);
+
+            vehicleTest.DateOut = new DateTime(2015, 9, 25, 16, 30, 10); // 1H
+            Assert.AreEqual(5, vehicleTest.PriceCharged);
+
+            vehicleTest.DateOut = new DateTime(2015, 9, 25, 16, 40, 10); // 1H 10m
+            Assert.AreEqual(5, vehicleTest.PriceCharged);
+
+            vehicleTest.DateOut = new DateTime(2015, 9, 25, 16, 41, 0); // 1H 11m
+            Assert.AreEqual(10, vehicleTest.PriceCharged);
+
+            vehicleTest.DateOut = new DateTime(2015, 9, 25, 17, 35, 2); // 2H 5m
+            Assert.AreEqual(10, vehicleTest.PriceCharged);
+
+            vehicleTest.DateOut = new DateTime(2015, 9, 25, 17, 41, 0); // 2H 11m
+            Assert.AreEqual(15, vehicleTest.PriceCharged);
+
         }
-        
+
     }
 }

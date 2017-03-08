@@ -3,8 +3,8 @@ como vai funcionar:
 
 
 class static configuraçãosistema {
-	toleranciaMinutos
-	preçoEstacionamento
+	toleranciaMinutos 
+	//preçoEstacionamento deixa pra uma v.2
 }
 
 objeto controlevigencia {

@@ -48,9 +48,16 @@ namespace parking_control.Tests.Service
         [TestMethod]
         public void GetPriceByDateRaiseExceptionTest()
         {
-            ValidityControl.GetPriceByDate(new DateTime(2015, 8, 17, 0, 0, 0));
-            // lança uma exceção se não tiver nada
-
-            // se já tiver alguma, indica que a anterior pode ser extendida o prazo
+            ValidityControl.ClearListDates();
+            try
+            {
+                ValidityControl.GetPriceByDate(new DateTime(2015, 8, 17, 0, 0, 0));
+                Assert.Fail("Não lançou a exception");
+            }
+            catch (InvalidOperationException e)
+            {
+                Assert.IsTrue(true);
+            }
         }
+    }
 }

@@ -18,9 +18,12 @@ create TABLE VehicleEntrance (
 	, PRIMARY KEY (id)
 );
 create TABLE ValidityDateControl (
-
+	id int NOT NULL AUTO_INCREMENT
+	, HourPrice DOUBLE
+	, InitialDate DATETIME
+	, FinalDate DATETIME
+	, PRIMARY KEY (id)
 );
-
 
 INSERT INTO VehicleEntrance (HourPrice, Board, DateIn, PriceCharged) VALUES (5, "ABC 1234", "2015-9-25 16:00:00", 0);
 

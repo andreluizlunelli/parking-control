@@ -15,6 +15,15 @@ namespace parking_control.Service
             HourPrice = ValidityControl.GetPriceByDate(dateIn);
         }
 
+        public VehicleEntrance(int id, string board, DateTime dateIn)
+        {
+            ID = id;
+            Board = board;
+            DateIn = dateIn;
+            HourPrice = ValidityControl.GetPriceByDate(dateIn);
+        }
+
+        public int ID { get; set; }
         public double HourPrice { get; private set; }
         public string Board { get; private set; }
         public DateTime DateIn { get; set; }

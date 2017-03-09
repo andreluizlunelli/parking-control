@@ -206,8 +206,10 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\ConnectMysql.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Service\Model\ValidityDateControlModel.cs" />
     <Compile Include="Service\ValidityControl.cs" />
     <Compile Include="Service\VehicleEntrance.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

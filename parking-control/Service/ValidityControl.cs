@@ -7,6 +7,7 @@ namespace parking_control.Service
 {
     public class ValidityDateControl
     {
+        public int ID { get; set; }
         public DateTime InitialDate { get; set; }
         public DateTime FinalDate { get; set; }
         public double HourPrice { get; set; }
@@ -17,6 +18,15 @@ namespace parking_control.Service
             this.InitialDate = InitialDate;
             this.FinalDate = FinalDate;
         }
+
+        public ValidityDateControl(int id, double price, DateTime InitialDate, DateTime FinalDate)
+        {
+            this.ID = id;
+            this.HourPrice = price;
+            this.InitialDate = InitialDate;
+            this.FinalDate = FinalDate;
+        }
+
     }
 
     public class ValidityControl

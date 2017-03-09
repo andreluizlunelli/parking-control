@@ -1,28 +1,29 @@
 como vai funcionar: 
 - a pessoa define um preço default e pode adicionar várias datas com várias cobranças;
 
-
-class static configuraçãosistema {
-	toleranciaMinutos 
-	//preçoEstacionamento deixa pra uma v.2
-}
-
-objeto controlevigencia {
-	dataInicio
-	dataFim
-	preço
-}
-
-objeto entradaveiculo {
-	dataEntrada
-	dataSaida
-	placa
-	valorCobrado
-}
-
 FALTANDO:
 - CONEXÃO DOS DADOS COM O BANCO
 - INTERAÇÃO COM A VIEW
+
+[ESTRUTURA DA BASE DE DADOS]
+
+create DATABASE parking_control;
+create TABLE VehicleEntrance (
+	id int NOT NULL AUTO_INCREMENT
+	, HourPrice DOUBLE
+	, Board VARCHAR(255)
+	, DateIn DATETIME
+	, DateOut DATETIME
+	, PriceCharged DOUBLE
+	, PRIMARY KEY (id)
+);
+create TABLE ValidityDateControl (
+
+);
+
+
+INSERT INTO VehicleEntrance (HourPrice, Board, DateIn, PriceCharged) VALUES (5, "ABC 1234", "2015-9-25 16:00:00", 0);
+
 
 Controle de estacionamento
 

@@ -28,7 +28,7 @@ namespace parking_control.Service
                 throw new ArgumentException();
 
             TimeSpan diff = (DateOut - DateIn);
-            if (StayTime() <= 30)
+            if (diff.TotalMinutes <= 30)
             {
                 return HourPrice / 2;
             }
@@ -41,16 +41,7 @@ namespace parking_control.Service
                 return HourPrice * (diff.Hours + 1);
             }            
             return HourPrice * diff.Hours;
-        }
-
-        // int is minute
-        public int StayTime()
-        {                        
-            if (InvalidDatetime(DateOut))            
-                throw new ArgumentException();
-            
-            return (int) (DateOut - DateIn).TotalMinutes;
-        }        
+        }               
 
         private bool InvalidDatetime(DateTime time)
         {

@@ -22,7 +22,7 @@ namespace parking_control.Tests.Service.Model
         [TestCleanup]
         public void clean()
         {
-            ConnectMysql.Close();
+            ValidityControlTest.RemoveItens();            
         }
 
         [TestMethod]

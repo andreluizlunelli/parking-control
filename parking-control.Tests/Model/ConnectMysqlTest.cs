@@ -47,14 +47,7 @@ namespace parking_control.Tests.Model
             Assert.IsNotNull(conn);
             Assert.AreEqual(conn, ConnectMysql.GetInstance());
         }
-
-        [TestMethod]
-        public void test02()
-        {
-            ConnectMysql.GetInstance();
-            int r = ConnectMysql.Close();
-            Assert.AreEqual(1, r);
-        }
+        
     }
 
 }

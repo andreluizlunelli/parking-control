@@ -78,7 +78,7 @@ namespace parking_control.Service
 
     }
 
-    public class ManagerVehicle
+    public class VehicleControl
     {
         private static Dictionary<string, VehicleEntrance> DictVehicle = new Dictionary<string, VehicleEntrance>();
 

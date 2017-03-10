@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using parking_control.Service.Model;
 
 namespace parking_control.Service
 {    
@@ -38,16 +39,30 @@ namespace parking_control.Service
             return date.ToString("dd/MM/yyyy HH:mm:ss");
         }
 
+        public bool IsSameDate(ValidityDateControl other)
+        {
+            return HourPrice == other.HourPrice
+                   && DateTime.Compare(InitialDate, other.InitialDate) == 0
+                   && DateTime.Compare(FinalDate, other.FinalDate) == 0;
+        }
+
+
     }
 
     public class ValidityControl
     {
-        private static List<ValidityDateControl> listDates = new List<ValidityDateControl>();
+        private static List<ValidityDateControl> listDates = new List<ValidityDateControl>();        
 
         public static void AddDateControl(double price, DateTime initialDateControl, DateTime finalDateControl)
         {
             ValidityDateControl validityDateControl = new ValidityDateControl(price, initialDateControl, finalDateControl);
+            ValidityDateControlModel.Insert(validityDateControl);
             listDates.Add(validityDateControl);            
+        }
+
+        public static void AddDateControl(ValidityDateControl dateControl)
+        {
+            AddDateControl(dateControl.HourPrice, dateControl.InitialDate, dateControl.FinalDate);
         }
 
         public static List<ValidityDateControl> GetListDates()
@@ -72,6 +87,12 @@ namespace parking_control.Service
                 throw new NotFoundDateControl();
             }            
             return filtered.HourPrice;
+        }
+
+        // atualiza a lista com informação vinda do banco
+        public static void UpdateListDates()
+        {
+            listDates = ValidityDateControlModel.SelectAll();
         }
     }
 

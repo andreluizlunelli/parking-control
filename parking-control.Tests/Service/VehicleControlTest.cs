@@ -5,12 +5,19 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using parking_control.Service;
+using parking_control.Service.Model;
 
 namespace parking_control.Tests.Service
 {
     [TestClass]
-    public class ManagerVehicleEntranceTest
+    public class VehicleEntranceTest
     {
+        [TestCleanup]
+        public void clean()
+        {
+            ValidityControlTest.RemoveItens();
+        }
+
         [TestInitialize]
         public void init()
         {
@@ -66,14 +73,28 @@ namespace parking_control.Tests.Service
             Assert.AreEqual(10, vehicleTest.PriceCharged);
 
             vehicleTest.DateOut = new DateTime(2015, 9, 25, 17, 41, 0); // 2H 11m
-            Assert.AreEqual(15, vehicleTest.PriceCharged);
+            Assert.AreEqual(15, vehicleTest.PriceCharged);            
+        }
 
+        private static void RemoveItens()
+        {
+            ValidityControl.UpdateListDates();
+            foreach (ValidityDateControl tmp in ValidityControl.GetListDates())
+            {
+                ValidityDateControlModel.Delete(tmp);
+            }
+            ValidityControl.ClearListDates();
         }
     }
 
     [TestClass]
-    public class ManagerVehicleTest
+    public class VehicleControlTest
     {
+        [TestCleanup]
+        public void clean()
+        {
+            ValidityControlTest.RemoveItens();
+        }
 
         [TestMethod]
         public void SetVehicleListTest()
@@ -87,8 +108,8 @@ namespace parking_control.Tests.Service
             DateTime dateIn = new DateTime(2015, 9, 25, 15, 30, 0);
             VehicleEntrance vehicle = new VehicleEntrance(board, dateIn);
 
-            ManagerVehicle.AddVehicle(vehicle);
-            Assert.AreEqual(vehicle, ManagerVehicle.GeyVehicle(vehicle.Board));
+            VehicleControl.AddVehicle(vehicle);
+            Assert.AreEqual(vehicle, VehicleControl.GeyVehicle(vehicle.Board));
         }
     }
 

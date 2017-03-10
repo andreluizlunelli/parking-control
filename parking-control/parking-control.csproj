@@ -292,6 +292,7 @@
     <Content Include="Views\Vehicle\SendCode.cshtml" />
     <Content Include="Views\Vehicle\VerifyCode.cshtml" />
     <Content Include="Views\ValidityDate\Add.cshtml" />
+    <Content Include="Views\ValidityDate\Update.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

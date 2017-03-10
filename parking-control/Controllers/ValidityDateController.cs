@@ -25,7 +25,7 @@ namespace parking_control.Controllers
         }
 
         [AllowAnonymous]
-        public ActionResult Add(string returnUrl)
+        public ActionResult Add()
         {
             AddValidityDateViewModel model = new AddValidityDateViewModel();
             return View(model);
@@ -34,7 +34,7 @@ namespace parking_control.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Add(AddValidityDateViewModel model, string returnUrl)
+        public async Task<ActionResult> Add(AddValidityDateViewModel model)
         {
             double price = 0;
             bool haveErrors = false;
@@ -70,5 +70,13 @@ namespace parking_control.Controllers
 
             return RedirectToAction("Index");
         }
+
+        [AllowAnonymous]
+        public ActionResult Update(string returnUrl)
+        {
+            AddValidityDateViewModel model = new AddValidityDateViewModel();
+            return View(model);
+        }
+
     }
 }

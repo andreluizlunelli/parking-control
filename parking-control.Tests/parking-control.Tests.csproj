@@ -92,8 +92,8 @@
     <Compile Include="Controllers\ValidityDateControllerTest.cs" />
     <Compile Include="Service\Model\ValidityDateControlModelTest.cs" />
     <Compile Include="Service\Model\VehicleEntranceModelTest.cs" />
-    <Compile Include="Service\ManagerValidityControlTest.cs" />
-    <Compile Include="Service\ManagerVehicleEntranceTest.cs" />
+    <Compile Include="Service\ValidityControlTest.cs" />
+    <Compile Include="Service\VehicleControlTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App.config" />

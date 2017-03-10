@@ -58,6 +58,30 @@ namespace parking_control.Service.Model
             return dateControl;
         }
 
+        public static List<ValidityDateControl> SelectAll(int limit = 1000)
+        {
+            List<ValidityDateControl> listDateControl = new List<ValidityDateControl>();            
+            string sql = string.Format("SELECT * FROM ValidityDateControl LIMIT {0}", limit);
+            using (MySqlCommand command = new MySqlCommand(sql, ConnectMysql.GetInstance()))
+            {
+                using (MySqlDataReader reader = command.ExecuteReader())
+                {
+                    if (!reader.Read())
+                        throw new NotExecuteCommandSql("Erro na leitura de uma data do banco ou a chave primária não existe na base");
+                    while (reader.Read())
+                    {
+                        int id = reader.GetInt32(0);
+                        double hourPrice = reader.GetDouble(1);
+                        DateTime dateTimeInitial = reader.GetDateTime(2);
+                        DateTime dateTimeFinal = reader.GetDateTime(3);
+                        listDateControl.Add(new ValidityDateControl(id, hourPrice, dateTimeInitial, dateTimeFinal));
+                    }
+
+                }
+            }
+            return listDateControl;
+        }
+
         public static void Insert(ValidityDateControl dateControl)
         {
             string initialDate = dateControl.InitialDate.ToString("yyyy-MM-dd HH:mm:ss");
@@ -111,6 +135,7 @@ namespace parking_control.Service.Model
                 command.ExecuteNonQuery();
             }
         }
+
     }
 
     

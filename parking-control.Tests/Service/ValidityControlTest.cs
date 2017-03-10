@@ -5,12 +5,19 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using parking_control.Service;
+using parking_control.Service.Model;
 
 namespace parking_control.Tests.Service
 {
     [TestClass]
-    public class ManagerValidityControlTest
+    public class ValidityControlTest
     {
+        [TestCleanup]
+        public void cleanup()
+        {
+            RemoveItens();
+        }
+
         [TestMethod]
         public void SetPriceTest()
         {
@@ -25,7 +32,17 @@ namespace parking_control.Tests.Service
             Assert.IsTrue(DateTime.Compare(dateControl.InitialDate, initialDateControl) == 0
                           && DateTime.Compare(dateControl.FinalDate, finalDateControl) == 0
                           && dateControl.HourPrice == price, "Houve um erro, datas diferentes");
+            
+        }
 
+        public static void RemoveItens()
+        {
+            ValidityControl.UpdateListDates();
+            foreach (ValidityDateControl tmp in ValidityControl.GetListDates())
+            {
+                ValidityDateControlModel.Delete(tmp);
+            }
+            ValidityControl.ClearListDates();
         }
 
         [TestMethod]
@@ -42,7 +59,7 @@ namespace parking_control.Tests.Service
             ValidityControl.AddDateControl(price, initialDateControl, finalDateControl);
 
             double returnedPrice = ValidityControl.GetPriceByDate(new DateTime(2015, 8, 17, 0, 0, 0));
-            Assert.AreEqual(5, returnedPrice);
+            Assert.AreEqual(5, returnedPrice);            
         }
 
         [TestMethod]
@@ -58,6 +75,18 @@ namespace parking_control.Tests.Service
             {
                 Assert.IsTrue(true);
             }
+        }
+
+        [TestMethod]
+        public void UpdateListTest()
+        {
+            ValidityControl.ClearListDates();
+            ValidityDateControl date = new ValidityDateControl(5, new DateTime(1991, 9, 24, 0, 0, 0), new DateTime(2017, 10, 10, 23, 59, 59));
+            ValidityControl.AddDateControl(date);
+            ValidityControl.ClearListDates();
+            ValidityControl.UpdateListDates();
+            ValidityDateControl dateItem = ValidityControl.GetListDates()[0];
+            Assert.IsTrue(date.IsSameDate(dateItem));            
         }
     }
 }

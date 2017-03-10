@@ -12,12 +12,11 @@ namespace parking_control.Tests.Service.Model
 {
     [TestClass]
     public class ValidityDateControlModelTest
-    {        
-
+    {
         [TestCleanup]
         public void clean()
         {
-            ConnectMysql.Close();
+            ValidityControlTest.RemoveItens();
         }
 
         [TestMethod]

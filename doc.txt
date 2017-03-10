@@ -1,8 +1,4 @@
-como vai funcionar: 
-- a pessoa define um preço default e pode adicionar várias datas com várias cobranças;
-
-FALTANDO:
-- CONEXÃO DOS DADOS COM O BANCO
+﻿FALTANDO:
 - INTERAÇÃO COM A VIEW
 
 [ESTRUTURA DA BASE DE DADOS]
@@ -24,8 +20,6 @@ create TABLE ValidityDateControl (
 	, FinalDate DATETIME
 	, PRIMARY KEY (id)
 );
-
-INSERT INTO VehicleEntrance (HourPrice, Board, DateIn, PriceCharged) VALUES (5, "ABC 1234", "2015-9-25 16:00:00", 0);
 
 
 Controle de estacionamento

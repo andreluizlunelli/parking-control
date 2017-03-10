@@ -115,4 +115,5 @@ namespace parking_control.Models
     {
         public Service.ValidityControl Service { get; set; }
     }
+
 }

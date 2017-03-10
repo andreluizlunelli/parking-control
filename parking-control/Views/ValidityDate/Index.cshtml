@@ -1,6 +1,4 @@
-﻿@using parking_control.Models
-@using parking_control.Service
-@model ValidityDateIndexModel
+﻿@using parking_control.Service
 @{
     ViewBag.Title = "Valores Praticados";
 }
@@ -8,17 +6,20 @@
 <h2>@ViewBag.Title.</h2>
 <div class="row">
     <div class="col-md-12">
+        @Html.ActionLink("[ADICIONAR]", "Add", "ValidityDate", routeValues: null, htmlAttributes: null)
+    </div>
+    <div class="col-md-12">
         <section id="listdates">
             <ul>
                 @foreach (ValidityDateControl item in ValidityControl.GetListDates())
                 {
                     <li>
-                        @item.ToString()                        
+                        @item.ToString()
                     </li>
                 }
-            </ul>            
+            </ul>
         </section>
-    </div>    
+    </div>
 </div>
 
 @section Scripts {

@@ -13,19 +13,41 @@ using parking_control.Models;
 
 namespace parking_control.Controllers
 {
-    [Authorize]
     public class ValidityDateController : Controller
     {
 
         // vai listar
         // GET: /ValidityDate/Index
         [AllowAnonymous]
-        public ActionResult Index(string returnUrl)
+        public ActionResult Index()
         {
-            ValidityDateIndexModel model = new ValidityDateIndexModel();            
-            Service.ValidityControl.AddDateControl(0, new DateTime(2015, 8, 16, 0, 0, 0), new DateTime(2015, 9, 16, 15, 30, 0));
+            return View();
+        }
+
+        [AllowAnonymous]
+        public ActionResult Add(string returnUrl)
+        {
+            AddValidityDateViewModel model = new AddValidityDateViewModel();
             return View(model);
         }
-        
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Add(AddValidityDateViewModel model, string returnUrl)
+        {
+            if (!model.IsValid())
+            {
+                ModelState.AddModelError("data", "Ocorreu algum erro no formato das datas ou no valor praticado");
+                return View(model);
+            }
+                
+            // (time.Year == 1 && time.Month == 1 && time.Day == 1 && time.Hour == 0 && time.Minute == 0 && time.Second == 0)
+            if (!ModelState.IsValid)
+                return View(model);
+            
+
+            return RedirectToAction("Index");
+        }
     }
 }

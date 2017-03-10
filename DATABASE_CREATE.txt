@@ -1,0 +1,19 @@
+﻿banco: MYSQL
+
+create DATABASE parking_control;
+create TABLE VehicleEntrance (
+	id int NOT NULL AUTO_INCREMENT
+	, HourPrice DOUBLE
+	, Board VARCHAR(255)
+	, DateIn DATETIME
+	, DateOut DATETIME
+	, PriceCharged DOUBLE
+	, PRIMARY KEY (id)
+);
+create TABLE ValidityDateControl (
+	id int NOT NULL AUTO_INCREMENT
+	, HourPrice DOUBLE
+	, InitialDate DATETIME
+	, FinalDate DATETIME
+	, PRIMARY KEY (id)
+);

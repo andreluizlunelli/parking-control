@@ -89,7 +89,7 @@
   <ItemGroup>
     <Compile Include="Model\ConnectMysqlTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Controllers\HomeControllerTest.cs" />
+    <Compile Include="Controllers\ValidityDateControllerTest.cs" />
     <Compile Include="Service\Model\ValidityDateControlModelTest.cs" />
     <Compile Include="Service\Model\VehicleEntranceModelTest.cs" />
     <Compile Include="Service\ManagerValidityControlTest.cs" />

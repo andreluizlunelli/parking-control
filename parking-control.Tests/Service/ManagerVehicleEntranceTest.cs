@@ -9,8 +9,14 @@ using parking_control.Service;
 namespace parking_control.Tests.Service
 {
     [TestClass]
-    public class VehicleEntranceTest
+    public class ManagerVehicleEntranceTest
     {
+        [TestInitialize]
+        public void init()
+        {
+            ValidityControl.ClearListDates();
+        }
+
         private VehicleEntrance GetVehicleTest()
         {
             string board = "ABC 8801";

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace parking_control.Models
@@ -108,5 +109,10 @@ namespace parking_control.Models
         [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; }
+    }
+
+    public class ValidityDateIndexModel
+    {
+        public Service.ValidityControl Service { get; set; }
     }
 }

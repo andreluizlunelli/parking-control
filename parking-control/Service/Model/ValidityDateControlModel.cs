@@ -35,7 +35,7 @@ namespace parking_control.Service.Model
 
         public static ValidityDateControl Select(int id)
         {
-            if (id == 0 || id == null)
+            if (id == 0)
                 throw new NotFoundIDEntity("A chave primaria não pode ser igual a 0");
 
             ValidityDateControl dateControl = null;
@@ -75,7 +75,7 @@ namespace parking_control.Service.Model
 
         public static void Update(ValidityDateControl dateControl)
         {
-            if (dateControl.ID == 0 || dateControl.ID == null)
+            if (dateControl.ID == 0)
                 throw new NotFoundIDEntity("A objeto atualizado não possue uma chave primária");
             string initialDate = dateControl.InitialDate.ToString("yyyy-MM-dd HH:mm:ss");
             string finalDate = dateControl.FinalDate.ToString("yyyy-MM-dd HH:mm:ss");
@@ -102,7 +102,7 @@ namespace parking_control.Service.Model
 
         public static void Delete(ValidityDateControl dateControl)
         {
-            if (dateControl.ID == 0 || dateControl.ID == null)
+            if (dateControl.ID == 0)
                 throw new NotFoundIDEntity("A objeto excluido não possue uma chave primária");
             string sql = string.Format("DELETE FROM ValidityDateControl WHERE id = {0}", dateControl.ID);
             using (MySqlCommand command = new MySqlCommand(sql, ConnectMysql.GetInstance()))

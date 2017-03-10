@@ -9,7 +9,7 @@ using parking_control.Service;
 namespace parking_control.Tests.Service
 {
     [TestClass]
-    public class ValidityControlTest
+    public class ManagerValidityControlTest
     {
         [TestMethod]
         public void SetPriceTest()

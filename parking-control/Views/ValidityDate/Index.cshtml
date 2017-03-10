@@ -1,0 +1,26 @@
+﻿@using parking_control.Models
+@using parking_control.Service
+@model ValidityDateIndexModel
+@{
+    ViewBag.Title = "Valores Praticados";
+}
+
+<h2>@ViewBag.Title.</h2>
+<div class="row">
+    <div class="col-md-12">
+        <section id="listdates">
+            <ul>
+                @foreach (ValidityDateControl item in ValidityControl.GetListDates())
+                {
+                    <li>
+                        @item.ToString()                        
+                    </li>
+                }
+            </ul>            
+        </section>
+    </div>    
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

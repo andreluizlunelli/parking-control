@@ -4,7 +4,8 @@ using System.Linq;
 using System.Web;
 
 namespace parking_control.Service
-{
+{    
+
     public class ValidityDateControl
     {
         public int ID { get; set; }
@@ -25,6 +26,16 @@ namespace parking_control.Service
             this.HourPrice = price;
             this.InitialDate = InitialDate;
             this.FinalDate = FinalDate;
+        }
+
+        public override string ToString()
+        {
+            return string.Format("ID:{0}, Preço:{1}, Hora Início:{2}, Hora Final:{3}", ID, HourPrice, ToBRDatetime(InitialDate), ToBRDatetime(FinalDate));
+        }
+
+        public static string ToBRDatetime(DateTime date)
+        {
+            return date.ToString("dd/MM/yyyy HH:mm:ss");
         }
 
     }

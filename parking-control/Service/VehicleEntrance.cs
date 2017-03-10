@@ -24,11 +24,16 @@ namespace parking_control.Service
         }
 
         public int ID { get; set; }
-        public double HourPrice { get; private set; }
+        public double HourPrice { get; set; }
         public string Board { get; private set; }
         public DateTime DateIn { get; set; }
         public DateTime DateOut { get; set; }
-        public double PriceCharged => GetPriceCharged();
+        private double priceCharged = 0;
+        public double PriceCharged
+        {
+            get { return GetPriceCharged(); }
+            set { this.priceCharged = value; }
+        }
 
         // metodo não utiliza os segundos para o calculo
         private double GetPriceCharged()
@@ -56,6 +61,21 @@ namespace parking_control.Service
         {
             return (time.Year == 1 && time.Month == 1 && time.Day == 1 && time.Hour == 0 && time.Minute == 0 && time.Second == 0);
         }
+
+        public static string ToBRDatetime(DateTime date)
+        {
+            return date.ToString("dd/MM/yyyy HH:mm:ss");
+        }
+
+        public bool IsSameVehicle(VehicleEntrance other)
+        {
+            return this.Board == other.Board
+                   && DateTime.Compare(this.DateIn, other.DateIn) == 0
+                   && DateTime.Compare(this.DateOut, other.DateOut) == 0
+                   && this.HourPrice == other.HourPrice
+                   && this.PriceCharged == other.PriceCharged;
+        }
+
     }
 
     public class ManagerVehicle

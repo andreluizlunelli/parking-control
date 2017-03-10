@@ -34,8 +34,10 @@ namespace parking_control.Tests.Service.Model
             ValidityControl.AddDateControl(price, initialDateControl, finalDateControl);
 
             //Insert
-            VehicleEntrance vehicle = new VehicleEntrance("ABC 1234", new DateTime(2015, 8, 16, 15, 0, 0));
-            vehicle.DateOut = new DateTime(2015, 8, 16, 15, 30, 0);
+            VehicleEntrance vehicle = new VehicleEntrance("ABC 1234", new DateTime(2015, 8, 16, 15, 0, 0))
+            {
+                DateOut = new DateTime(2015, 8, 16, 15, 30, 0)
+            };
             VehicleEntranceModel.Insert(vehicle);
 
             //Select by board
@@ -51,6 +53,19 @@ namespace parking_control.Tests.Service.Model
             VehicleEntranceModel.Update(vehicle);
             VehicleEntrance updatedVehicle = VehicleEntranceModel.Select(vehicle.Board);
             Assert.IsTrue( !selectedVehicle.IsSameVehicle(updatedVehicle));
+
+            //Delete
+            VehicleEntranceModel.Delete(updatedVehicle);
+            try
+            {
+                VehicleEntrance deletedVehicle = VehicleEntranceModel.Select(updatedVehicle.Board);
+                Assert.Fail("Deveria ter lançado uma exceção pois não deveria existir objeto na base");
+            }
+            catch (NotExecuteCommandSql e)
+            {
+                Assert.IsTrue(true);
+            }
+                        
         }
        
     }

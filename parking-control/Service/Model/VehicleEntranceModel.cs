@@ -94,5 +94,23 @@ namespace parking_control.Service.Model
             }
 
         }
+
+        public static void Delete(VehicleEntrance vehicle)
+        {
+            DeleteByID(vehicle.ID);
+        }
+
+        public static void DeleteByID(int id)
+        {
+            if (id == 0)
+                throw new NotFoundIDEntity("A objeto excluido não possue uma chave primária");
+            string sql = string.Format("DELETE FROM VehicleEntrance WHERE id = {0}", id);
+            using (MySqlCommand command = new MySqlCommand(sql, ConnectMysql.GetInstance()))
+            {
+                command.CommandText = sql;
+                command.ExecuteNonQuery();
+            }
+
+        }
     }
 }

@@ -36,16 +36,37 @@ namespace parking_control.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Add(AddValidityDateViewModel model, string returnUrl)
         {
-            if (!model.IsValid())
+            double price = 0;
+            bool haveErrors = false;
+            try
             {
-                ModelState.AddModelError("data", "Ocorreu algum erro no formato das datas ou no valor praticado");
-                return View(model);
+                string doubleParsed = model.HourPrice.ToString().Replace(",", ".");
+                price = double.Parse(doubleParsed);
             }
-                
-            // (time.Year == 1 && time.Month == 1 && time.Day == 1 && time.Hour == 0 && time.Minute == 0 && time.Second == 0)
-            if (!ModelState.IsValid)
+            catch (FormatException e)
+            {
+                ModelState.AddModelError("data", "Não foi possível reconhecer o valor do preço praticado");
+                haveErrors = true;
+            }
+            if (model.HourPrice == 0)
+            {
+                ModelState.AddModelError("data", "Valor praticado não pode ser 0");
+                haveErrors = true;
+            }
+            if (!model.DateValid(model.InitialDate))
+            {
+                ModelState.AddModelError("data", "Data inicial inválida");
+                haveErrors = true;
+            }
+            if (!model.DateValid(model.FinalDate))
+            {
+                ModelState.AddModelError("data", "Data final inválida");
+                haveErrors = true;
+            }
+            if (haveErrors)
                 return View(model);
             
+            Service.ValidityControl.AddDateControl(price, model.InitialDate, model.FinalDate);
 
             return RedirectToAction("Index");
         }

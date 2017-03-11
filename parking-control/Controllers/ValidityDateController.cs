@@ -43,8 +43,7 @@ namespace parking_control.Controllers
             bool haveErrors = false;
             try
             {
-                string doubleParsed = model.HourPrice.ToString().Replace(",", ".");
-                price = double.Parse(doubleParsed);
+                price = double.Parse(model.HourPrice);
             }
             catch (FormatException e)
             {

@@ -85,7 +85,7 @@ namespace parking_control.Service.Model
             string finalDate = dateControl.FinalDate.ToString("yyyy-MM-dd HH:mm:ss");
             string sql = string.Format(
                     "INSERT INTO ValidityDateControl (HourPrice, InitialDate, FinalDate) VALUES ({0}, \"{1}\", \"{2}\");"
-                    , dateControl.HourPrice, initialDate, finalDate);
+                    , dateControl.HourPrice.ToString().Replace(",", "."), initialDate, finalDate);
 
             using (MySqlCommand command = new MySqlCommand(sql, ConnectMysql.GetInstance()))
             {

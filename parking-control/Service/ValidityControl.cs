@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using parking_control.Models;
 using parking_control.Service.Model;
 
 namespace parking_control.Service
@@ -65,6 +66,14 @@ namespace parking_control.Service
             AddDateControl(dateControl.HourPrice, dateControl.InitialDate, dateControl.FinalDate);
         }
 
+        public static void UpdateDateControl(ValidityDateControl dateControl)
+        {
+            if (dateControl.ID == 0)
+                throw new NotFoundIDEntity("Para atualizar um objeto precisa da sua chave primaria");
+            ValidityDateControlModel.Update(dateControl);
+            UpdateListDatesFromDB();
+        }
+
         public static List<ValidityDateControl> GetListDates()
         {
             return listDates;
@@ -90,7 +99,7 @@ namespace parking_control.Service
         }
 
         // atualiza a lista com informação vinda do banco
-        public static void UpdateListDates()
+        public static void UpdateListDatesFromDB()
         {
             listDates = ValidityDateControlModel.SelectAll();
         }

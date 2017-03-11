@@ -23,7 +23,7 @@ namespace parking_control.Controllers
         [AllowAnonymous]
         public ActionResult Index()
         {
-            Service.ValidityControl.UpdateListDates();
+            Service.ValidityControl.UpdateListDatesFromDB();
             return View();
         }
 
@@ -51,7 +51,7 @@ namespace parking_control.Controllers
                 ModelState.AddModelError("data", "Não foi possível reconhecer o valor do preço praticado");
                 haveErrors = true;
             }
-            if (model.HourPrice == 0)
+            if (price == 0)
             {
                 ModelState.AddModelError("data", "Valor praticado não pode ser 0");
                 haveErrors = true;
@@ -79,11 +79,52 @@ namespace parking_control.Controllers
         {
             AddValidityDateViewModel model = new AddValidityDateViewModel();
             ValidityDateControl date = ValidityDateControlModel.Select(id);
-            model.HourPrice = date.HourPrice;
+            model.HourPrice = date.HourPrice.ToString().Replace(".", ",");
             model.InitialDate = date.InitialDate;
             model.FinalDate = date.FinalDate;
             return View(model);
         }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Update(AddValidityDateViewModel model, int id)
+        {
+            double price = 0;
+            bool haveErrors = false;
+            try
+            {                
+                price = double.Parse(model.HourPrice);
+            }
+            catch (FormatException e)
+            {
+                ModelState.AddModelError("data", "Não foi possível reconhecer o valor do preço praticado");
+                haveErrors = true;
+            }
+            if (price == 0)
+            {
+                ModelState.AddModelError("data", "Valor praticado não pode ser 0");
+                haveErrors = true;
+            }
+            if (!model.DateValid(model.InitialDate))
+            {
+                ModelState.AddModelError("data", "Data inicial inválida");
+                haveErrors = true;
+            }
+            if (!model.DateValid(model.FinalDate))
+            {
+                ModelState.AddModelError("data", "Data final inválida");
+                haveErrors = true;
+            }
+            if (haveErrors)
+                return View(model);
+
+            ValidityDateControl vdc = new ValidityDateControl(id, price, model.InitialDate, model.FinalDate);        
+            Service.ValidityControl.UpdateDateControl(vdc);
+
+            return RedirectToAction("Index");
+        }
+
 
     }
 }

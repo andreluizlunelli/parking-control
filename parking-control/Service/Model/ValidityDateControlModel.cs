@@ -102,7 +102,7 @@ namespace parking_control.Service.Model
             string finalDate = dateControl.FinalDate.ToString("yyyy-MM-dd HH:mm:ss");
             string sql = string.Format(
                     "UPDATE ValidityDateControl SET HourPrice={0}, InitialDate=\"{1}\", FinalDate=\"{2}\" WHERE id = {3};"
-                    , dateControl.HourPrice, initialDate, finalDate, dateControl.ID);
+                    , dateControl.HourPrice.ToString().Replace(",", "."), initialDate, finalDate, dateControl.ID);
 
             using (MySqlCommand command = new MySqlCommand(sql, ConnectMysql.GetInstance()))
             {

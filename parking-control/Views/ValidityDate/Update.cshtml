@@ -7,11 +7,11 @@
 <h2>@ViewBag.Title.</h2>
 <div class="row">
     <div class="col-md-12">
-        @Html.ActionLink("[CANCELAR]", "Index", "ValidityDate", routeValues: null, htmlAttributes: new { id = 123 })
+        @Html.ActionLink("[CANCELAR]", "Index", "ValidityDate", routeValues: null, htmlAttributes: null)                
     </div>
     <div class="col-md-12">
         <section id="addDate">
-            @using (Html.BeginForm("Add", "ValidityDate", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new {@class = "form-horizontal", role = "form"}))
+            @using (Html.BeginForm("Update", "ValidityDate", new { id = ViewContext.RouteData.Values["id"] }, FormMethod.Post, new {@class = "form-horizontal", role = "form"}))
             {
                 @Html.AntiForgeryToken()
                 <hr/>
@@ -32,11 +32,12 @@
                     @Html.LabelFor(m => m.HourPrice, "Valor Praticado", new {@class = "col-md-2 control-label"})
                     <div class="col-md-10">
                         @Html.TextBoxFor(m => m.HourPrice, new {@class = "form-control"})
+                        <p class="help-block">Ex: 3,50</p>
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
-                        <input type="submit" class="btn btn-default" value="Adicionar"/>
+                        <input type="submit" class="btn btn-default" value="Atualizar"/>
                     </div>
                 </div>
             }

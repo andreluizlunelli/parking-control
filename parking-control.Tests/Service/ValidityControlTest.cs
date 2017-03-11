@@ -37,7 +37,7 @@ namespace parking_control.Tests.Service
 
         public static void RemoveItens()
         {
-            ValidityControl.UpdateListDates();
+            ValidityControl.UpdateListDatesFromDB();
             foreach (ValidityDateControl tmp in ValidityControl.GetListDates())
             {
                 ValidityDateControlModel.Delete(tmp);
@@ -84,7 +84,7 @@ namespace parking_control.Tests.Service
             ValidityDateControl date = new ValidityDateControl(5, new DateTime(1991, 9, 24, 0, 0, 0), new DateTime(2017, 10, 10, 23, 59, 59));
             ValidityControl.AddDateControl(date);
             ValidityControl.ClearListDates();
-            ValidityControl.UpdateListDates();
+            ValidityControl.UpdateListDatesFromDB();
             ValidityDateControl dateItem = ValidityControl.GetListDates()[0];
             Assert.IsTrue(date.IsSameDate(dateItem));            
         }

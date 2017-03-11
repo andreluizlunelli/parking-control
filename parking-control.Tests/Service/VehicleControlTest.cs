@@ -78,7 +78,7 @@ namespace parking_control.Tests.Service
 
         private static void RemoveItens()
         {
-            ValidityControl.UpdateListDates();
+            ValidityControl.UpdateListDatesFromDB();
             foreach (ValidityDateControl tmp in ValidityControl.GetListDates())
             {
                 ValidityDateControlModel.Delete(tmp);

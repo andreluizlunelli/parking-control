@@ -18,7 +18,7 @@ namespace parking_control.Models
 
         [Required]
         [Display(Name = "HourPrice")]
-        public double HourPrice { get; set; }        
+        public string HourPrice { get; set; }        
 
         public bool DateValid(DateTime time)
         {

@@ -10,6 +10,8 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using parking_control.Models;
+using parking_control.Service;
+using parking_control.Service.Model;
 
 namespace parking_control.Controllers
 {
@@ -21,13 +23,14 @@ namespace parking_control.Controllers
         [AllowAnonymous]
         public ActionResult Index()
         {
+            Service.ValidityControl.UpdateListDates();
             return View();
         }
 
         [AllowAnonymous]
         public ActionResult Add()
         {
-            AddValidityDateViewModel model = new AddValidityDateViewModel();
+            AddValidityDateViewModel model = new AddValidityDateViewModel();            
             return View(model);
         }
 
@@ -72,9 +75,13 @@ namespace parking_control.Controllers
         }
 
         [AllowAnonymous]
-        public ActionResult Update(string returnUrl)
+        public ActionResult Update(int id)
         {
             AddValidityDateViewModel model = new AddValidityDateViewModel();
+            ValidityDateControl date = ValidityDateControlModel.Select(id);
+            model.HourPrice = date.HourPrice;
+            model.InitialDate = date.InitialDate;
+            model.FinalDate = date.FinalDate;
             return View(model);
         }
 

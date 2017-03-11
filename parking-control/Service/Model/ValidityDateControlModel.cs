@@ -66,8 +66,6 @@ namespace parking_control.Service.Model
             {
                 using (MySqlDataReader reader = command.ExecuteReader())
                 {
-                    if (!reader.Read())
-                        throw new NotExecuteCommandSql("Erro na leitura de uma data do banco ou a chave primária não existe na base");
                     while (reader.Read())
                     {
                         int id = reader.GetInt32(0);
@@ -76,7 +74,6 @@ namespace parking_control.Service.Model
                         DateTime dateTimeFinal = reader.GetDateTime(3);
                         listDateControl.Add(new ValidityDateControl(id, hourPrice, dateTimeInitial, dateTimeFinal));
                     }
-
                 }
             }
             return listDateControl;

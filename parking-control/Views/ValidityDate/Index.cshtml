@@ -7,6 +7,7 @@
 <div class="row">
     <div class="col-md-12">
         @Html.ActionLink("[ADICIONAR]", "Add", "ValidityDate", routeValues: null, htmlAttributes: null)
+        <br /><br />
     </div>
     <div class="col-md-12">
         <section id="listdates">
@@ -15,6 +16,7 @@
                 {
                     <li>
                         @item.ToString()
+                        @Html.ActionLink("[ALTERAR]", "Update", "ValidityDate", routeValues: new { id = item.ID}, htmlAttributes: null)
                     </li>
                 }
             </ul>

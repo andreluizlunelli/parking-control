@@ -6,17 +6,18 @@
 <h2>@ViewBag.Title.</h2>
 <div class="row">
     <div class="col-md-12">
-        @Html.ActionLink("[ADICIONAR]", "Add", "ValidityDate", routeValues: null, htmlAttributes: null)
+        @Html.ActionLink("[ADICIONAR]", "Add", "ValidityDate", null, null)
         <br /><br />
     </div>
     <div class="col-md-12">
-        <section id="listdates">
+        <section id="listIndex">
             <ul>
-                @foreach (ValidityDateControl item in ValidityControl.GetListDates())
+                @foreach (var item in ValidityControl.GetListDates())
                 {
-                    <li>
+                    <li >
                         @item.ToString()
-                        @Html.ActionLink("[ALTERAR]", "Update", "ValidityDate", routeValues: new { id = item.ID}, htmlAttributes: null)
+                        @Html.ActionLink("[ALTERAR]", "Update", "ValidityDate", new { id = item.ID}, null)
+                        @Html.ActionLink("[EXCLUIR]", "Delete", "ValidityDate", new { id = item.ID }, new { @class = "delete-index"})
                     </li>
                 }
             </ul>
@@ -26,4 +27,5 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/parking-control")
 }

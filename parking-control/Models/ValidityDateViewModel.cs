@@ -6,7 +6,7 @@ using System.Web;
 
 namespace parking_control.Models
 {
-    public class AddValidityDateViewModel
+    public class ValidityDateViewModel
     {
         [Required]
         [Display(Name = "InitialDate")]

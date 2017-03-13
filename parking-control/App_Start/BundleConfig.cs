@@ -26,6 +26,8 @@ namespace parking_control
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"));
+            bundles.Add(new ScriptBundle("~/bundles/parking-control").Include(
+                "~/Scripts/parking-control.js"));
         }
     }
 }

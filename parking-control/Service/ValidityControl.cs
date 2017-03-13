@@ -103,6 +103,20 @@ namespace parking_control.Service
         {
             listDates = ValidityDateControlModel.SelectAll();
         }
+
+        public static void DeleteDateControlById(int id)
+        {
+            try
+            {
+                ValidityDateControl dateControl = listDates.Where((ValidityDateControl vdc) => { return id == vdc.ID; }).First();
+                listDates.Remove(dateControl);
+                ValidityDateControlModel.Delete(dateControl);
+            }
+            catch (InvalidOperationException e)
+            {
+                throw new NotFoundIDEntity("Não encontrou o item para excluir");
+            }
+        }
     }
 
     public class NotFoundDateControl : Exception

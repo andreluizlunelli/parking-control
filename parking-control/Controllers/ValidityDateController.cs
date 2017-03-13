@@ -30,14 +30,14 @@ namespace parking_control.Controllers
         [AllowAnonymous]
         public ActionResult Add()
         {
-            AddValidityDateViewModel model = new AddValidityDateViewModel();            
+            ValidityDateViewModel model = new ValidityDateViewModel();
             return View(model);
         }
 
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Add(AddValidityDateViewModel model)
+        public async Task<ActionResult> Add(ValidityDateViewModel model)
         {
             double price = 0;
             bool haveErrors = false;
@@ -67,7 +67,7 @@ namespace parking_control.Controllers
             }
             if (haveErrors)
                 return View(model);
-            
+
             Service.ValidityControl.AddDateControl(price, model.InitialDate, model.FinalDate);
 
             return RedirectToAction("Index");
@@ -76,7 +76,7 @@ namespace parking_control.Controllers
         [AllowAnonymous]
         public ActionResult Update(int id)
         {
-            AddValidityDateViewModel model = new AddValidityDateViewModel();
+            ValidityDateViewModel model = new ValidityDateViewModel();
             ValidityDateControl date = ValidityDateControlModel.Select(id);
             model.HourPrice = date.HourPrice.ToString().Replace(".", ",");
             model.InitialDate = date.InitialDate;
@@ -87,12 +87,12 @@ namespace parking_control.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Update(AddValidityDateViewModel model, int id)
+        public async Task<ActionResult> Update(ValidityDateViewModel model, int id)
         {
             double price = 0;
             bool haveErrors = false;
             try
-            {                
+            {
                 price = double.Parse(model.HourPrice);
             }
             catch (FormatException e)
@@ -118,12 +118,33 @@ namespace parking_control.Controllers
             if (haveErrors)
                 return View(model);
 
-            ValidityDateControl vdc = new ValidityDateControl(id, price, model.InitialDate, model.FinalDate);        
+            ValidityDateControl vdc = new ValidityDateControl(id, price, model.InitialDate, model.FinalDate);
             Service.ValidityControl.UpdateDateControl(vdc);
 
             return RedirectToAction("Index");
         }
 
+        [AllowAnonymous]        
+        public async Task<ActionResult> Delete(ValidityDateViewModel model, int id)
+        {
+            bool haveErrors = false;
+            if (id == 0)
+            {
+                haveErrors = true;
+                ModelState.AddModelError("data", "Chave primária inválida");
+            }                
+            if (haveErrors)
+                return View(model);
 
+            try
+            {
+                Service.ValidityControl.DeleteDateControlById(id);
+            }
+            catch (NotFoundIDEntity e)
+            {
+            }
+
+            return RedirectToAction("Index");
+        }
     }
 }

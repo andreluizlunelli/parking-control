@@ -211,6 +211,7 @@
     <Compile Include="Models\ConnectMysql.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\VehicleViewModel.cs" />
     <Compile Include="Models\ValidityDateViewModel.cs" />
     <Compile Include="Service\Model\ValidityDateControlModel.cs" />
     <Compile Include="Service\Model\VehicleEntranceModel.cs" />
@@ -294,6 +295,8 @@
     <Content Include="Views\Vehicle\VerifyCode.cshtml" />
     <Content Include="Views\ValidityDate\Add.cshtml" />
     <Content Include="Views\ValidityDate\Update.cshtml" />
+    <Content Include="Views\Vehicle\Add.cshtml" />
+    <Content Include="Views\Vehicle\Update.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -18,7 +18,6 @@ namespace parking_control.Controllers
     public class ValidityDateController : Controller
     {
 
-        // vai listar
         // GET: /ValidityDate/Index
         [AllowAnonymous]
         public ActionResult Index()

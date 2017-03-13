@@ -77,6 +77,28 @@ namespace parking_control.Service.Model
             return vehicle;
         }
 
+        public static Dictionary<string, VehicleEntrance> SelectAll(int limit = 1000)
+        {
+            Dictionary<string, VehicleEntrance> dict = new Dictionary<string, VehicleEntrance>();
+            string sql = string.Format("SELECT * FROM VehicleEntrance LIMIT {0}", limit);
+            using (MySqlCommand command = new MySqlCommand(sql, ConnectMysql.GetInstance()))
+            {
+                using (MySqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        int id = reader.GetInt32(0);
+                        double hourPrice = reader.GetDouble(1);
+                        string board = reader.GetString(2);
+                        DateTime dateIn = reader.GetDateTime(3);
+                        DateTime dateOut = reader.GetDateTime(4);
+                        dict[board] = new VehicleEntrance(id, hourPrice, board, dateIn, dateOut);                        
+                    }
+                }
+            }
+            return dict;
+        }
+
         public static void Update(VehicleEntrance vehicle)
         {
             if (vehicle.ID == 0)

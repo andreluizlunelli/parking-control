@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Web;
+using parking_control.Service.Model;
 
 namespace parking_control.Service
 {
@@ -23,6 +24,15 @@ namespace parking_control.Service
             HourPrice = ValidityControl.GetPriceByDate(dateIn);
         }
 
+        public VehicleEntrance(int id, double hourPrice, string board, DateTime dateIn, DateTime dateOut)
+        {
+            ID = id;
+            HourPrice = hourPrice;
+            Board = board;
+            DateIn = dateIn;
+            DateOut = dateOut;            
+        }
+
         public int ID { get; set; }
         public double HourPrice { get; set; }
         public string Board { get; private set; }
@@ -38,9 +48,11 @@ namespace parking_control.Service
         // metodo não utiliza os segundos para o calculo
         private double GetPriceCharged()
         {
-            if (InvalidDatetime(DateOut))            
-                throw new ArgumentException();
-
+            if (InvalidDatetime(DateOut)) // não tem data de saida
+            {
+                return 0;
+            }           
+                
             TimeSpan diff = (DateOut - DateIn);
             if (diff.TotalMinutes <= 30)
             {
@@ -76,21 +88,44 @@ namespace parking_control.Service
                    && this.PriceCharged == other.PriceCharged;
         }
 
+        public override string ToString()
+        {
+            return string.Format("ID:{0}, Preço da hora:{1}, Hora Início:{2}, Hora Final:{3}, Preço final:{4}", ID, HourPrice, ToBRDatetime(DateIn), ToBRDatetime(DateOut), PriceCharged);
+        }
+
     }
 
     public class VehicleControl
     {
-        private static Dictionary<string, VehicleEntrance> DictVehicle = new Dictionary<string, VehicleEntrance>();
+        private static Dictionary<string, VehicleEntrance> dictVehicle = new Dictionary<string, VehicleEntrance>();
 
+        public static void Entry(string board, DateTime initialDate)
+        {
+            VehicleEntrance entrance = new VehicleEntrance(board, initialDate);
+            AddVehicle(entrance);
+        }
+        
         public static void AddVehicle(VehicleEntrance vehicle)
         {
-            DictVehicle.Add(vehicle.Board, vehicle);
+            VehicleEntranceModel.Insert(vehicle);
+            dictVehicle.Add(vehicle.Board, vehicle);
         }
 
         public static VehicleEntrance GeyVehicle(string board)
         {
-            return DictVehicle[board];
+            return dictVehicle[board];
         }
+
+        public static Dictionary<string, VehicleEntrance> GetDictVehicles()
+        {
+            return dictVehicle;
+        }
+
+        public static void UpdateDictDatesFromDB()
+        {
+            dictVehicle = VehicleEntranceModel.SelectAll();
+        }
+
     }
 
 }

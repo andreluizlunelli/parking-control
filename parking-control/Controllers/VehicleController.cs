@@ -10,22 +10,58 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using parking_control.Models;
+using parking_control.Service;
 
 namespace parking_control.Controllers
-{
-    [Authorize]
+{    
     public class VehicleController : Controller
     {
 
-        // vai listar
         // GET: /ValidityDate/Index
         [AllowAnonymous]
         public ActionResult Index(string returnUrl)
         {
-            ValidityDateIndexModel model = new ValidityDateIndexModel();            
-            //Service.ValidityControl.AddDateControl(0, new DateTime(2015, 8, 16, 0, 0, 0), new DateTime(2015, 9, 16, 15, 30, 0));
+            Service.VehicleControl.UpdateDictDatesFromDB();
+            return View();
+        }
+
+        [AllowAnonymous]
+        public ActionResult Add()
+        {
+            VehicleAddViewModel model = new VehicleAddViewModel();
             return View(model);
         }
-        
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Add(VehicleAddViewModel model)
+        {            
+            bool haveErrors = false;
+            if (model.Board.Length == 0)
+            {
+                ModelState.AddModelError("data", "Placa do carro não pode ter valor vazio");
+                haveErrors = true;
+            }
+            if (!model.DateValid(model.InitialDate))
+            {
+                ModelState.AddModelError("data", "Data inicial inválida");
+                haveErrors = true;
+            }
+            if (haveErrors)
+                return View(model);
+
+            try
+            {
+                Service.VehicleControl.Entry(model.Board, model.InitialDate);
+            }
+            catch (NotFoundDateControl e)
+            {
+                ModelState.AddModelError("data", "Não foi encontrado um período vigente para associar a data ao preço cobrado. Adicione um Valor Praticado.");
+                return View(model);
+            }
+            
+            return RedirectToAction("Index");
+        }
     }
 }

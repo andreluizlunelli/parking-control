@@ -1,0 +1,61 @@
+﻿@using parking_control.Service
+@model parking_control.Models.VehicleUpdateViewModel
+@{
+    ViewBag.Title = "Adicionar Veículo";
+}
+
+<h2>@ViewBag.Title.</h2>
+<div class="row">
+    <div class="col-md-12">
+        @Html.ActionLink("[CANCELAR]", "Index", "Vehicle", routeValues: null, htmlAttributes: null)
+    </div>
+    <div class="col-md-12">
+        <section id="addDate">
+            @using (Html.BeginForm("Add", "Vehicle", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new {@class = "form-horizontal", role = "form"}))
+            {
+                @Html.AntiForgeryToken()
+                <hr/>
+                @Html.ValidationSummary("", new {@class = "text-danger"})
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Board, "Placa", new { @class = "col-md-2 control-label" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(m => m.Board, new { @class = "form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.InitialDate, "Data inicial", new {@class = "col-md-2 control-label"})
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(m => m.InitialDate, new {@class = "form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.HourPrice, "Valor Praticado", new { @class = "col-md-2 control-label" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(m => m.HourPrice, new { @class = "form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.PriceCharged, "Preço final", new { @class = "col-md-2 control-label" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(m => m.PriceCharged, new { @class = "form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.FinalDate, "Data Final", new { @class = "col-md-2 control-label" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(m => m.FinalDate, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" class="btn btn-default" value="Adicionar"/>
+                    </div>
+                </div>
+            }
+        </section>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

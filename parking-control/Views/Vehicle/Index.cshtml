@@ -1,24 +1,29 @@
 ﻿@using parking_control.Models
 @using parking_control.Service
-@model ValidityDateIndexModel
 @{
-    ViewBag.Title = "Valores Praticados";
+    ViewBag.Title = "Veículos";
 }
 
 <h2>@ViewBag.Title.</h2>
 <div class="row">
     <div class="col-md-12">
+        @Html.ActionLink("[ADICIONAR]", "Add", "Vehicle", null, null)
+        <br /><br />
+    </div>
+    <div class="col-md-12">
         <section id="listdates">
             <ul>
-                @foreach (ValidityDateControl item in ValidityControl.GetListDates())
+                @foreach (KeyValuePair<string, VehicleEntrance> item in VehicleControl.GetDictVehicles())
                 {
                     <li>
-                        @item.ToString()                        
+                        @item.ToString()
+                        @Html.ActionLink("[ALTERAR]", "Update", "Vehicle", new { id = item.Value.ID }, null)
+                        @Html.ActionLink("[EXCLUIR]", "Delete", "Vehicle", new { id = item.Value.ID }, new { @class = "delete-index" })
                     </li>
                 }
-            </ul>            
+            </ul>
         </section>
-    </div>    
+    </div>
 </div>
 
 @section Scripts {

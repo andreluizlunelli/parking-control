@@ -15,7 +15,7 @@ O valor da hora adicional possui uma tolerância de 10 minutos para cada 1 hora.
 Utilizar a placa do veículo como chave de busca. 
 
 # banco de dados MYSQL
-
+```
 create DATABASE parking_control;
 create TABLE VehicleEntrance (
 	id int NOT NULL AUTO_INCREMENT
@@ -33,3 +33,4 @@ create TABLE ValidityDateControl (
 	, FinalDate DATETIME
 	, PRIMARY KEY (id)
 );
+```

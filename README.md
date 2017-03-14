@@ -1,4 +1,4 @@
-﻿# parking-control
+# parking-control
 
 Desenvolver um aplicativo simples para controle de estacionamento onde o usuário poderá registrar a entrada e saída dos veículos. 
 

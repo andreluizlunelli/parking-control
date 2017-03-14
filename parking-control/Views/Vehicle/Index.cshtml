@@ -7,18 +7,18 @@
 <h2>@ViewBag.Title.</h2>
 <div class="row">
     <div class="col-md-12">
-        @Html.ActionLink("[ADICIONAR]", "Add", "Vehicle", null, null)
+        @Html.ActionLink("[MARCAR ENTRADA]", "Add", "Vehicle", null, null)
         <br /><br />
     </div>
     <div class="col-md-12">
         <section id="listdates">
             <ul>
-                @foreach (KeyValuePair<string, VehicleEntrance> item in VehicleControl.GetDictVehicles())
+                @foreach (VehicleEntrance item in VehicleControl.GetListVehicles())
                 {
                     <li>
                         @item.ToString()
-                        @Html.ActionLink("[ALTERAR]", "Update", "Vehicle", new { id = item.Value.ID }, null)
-                        @Html.ActionLink("[EXCLUIR]", "Delete", "Vehicle", new { id = item.Value.ID }, new { @class = "delete-index" })
+                        @Html.ActionLink("[MARCAR SAÍDA]", "Update", "Vehicle", new { id = item.ID }, null)
+                        @Html.ActionLink("[EXCLUIR]", "Delete", "Vehicle", new { id = item.ID }, new { @class = "delete-index" })
                     </li>
                 }
             </ul>

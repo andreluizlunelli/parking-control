@@ -31,7 +31,7 @@ namespace parking_control.Models
         // disabled
         [Required]        
         [Display(Name = "Board")]
-        public DateTime Board { get; set; } 
+        public string Board { get; set; } 
 
         // disabled
         [Required]
@@ -42,11 +42,6 @@ namespace parking_control.Models
         [Required]
         [Display(Name = "HourPrice")]
         public string HourPrice { get; set; }
-
-        // disabled
-        [Required]
-        [Display(Name = "PriceCharged")]
-        public string PriceCharged { get; set; }
 
         public bool DateValid(DateTime time)
         {

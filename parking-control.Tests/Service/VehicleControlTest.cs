@@ -76,6 +76,28 @@ namespace parking_control.Tests.Service
             Assert.AreEqual(15, vehicleTest.PriceCharged);            
         }
 
+        [TestMethod]
+        public void DateOutExceptionTest()
+        {
+            DateTime initialDateControl = new DateTime(2017, 1, 1, 0, 0, 0);
+            DateTime finalDateControl = new DateTime(2017, 12, 10, 23, 59, 59);
+            double hourPrice = 5;
+            ValidityControl.AddDateControl(hourPrice, initialDateControl, finalDateControl);
+
+            VehicleEntrance vehicle = new VehicleEntrance("ABC 1234", new DateTime(2017, 1, 2, 0, 0, 0));
+            vehicle.DateOut = new DateTime(2017, 1, 2, 0, 0, 1); // um segundo depois
+            try
+            {
+                vehicle.DateOut = new DateTime(2017, 1, 1, 0, 0, 0); // um dia anterior
+                Assert.Fail("Deveria ter lançado uma exceção ao usar uma data de saída menor que a data de entrada.");
+            }
+            catch (DateOutEarlierThanDateIn e)
+            {
+                Assert.IsTrue(true);
+            }
+
+        }
+
         private static void RemoveItens()
         {
             ValidityControl.UpdateListDatesFromDB();
@@ -109,8 +131,34 @@ namespace parking_control.Tests.Service
             VehicleEntrance vehicle = new VehicleEntrance(board, dateIn);
 
             VehicleControl.AddVehicle(vehicle);
-            Assert.AreEqual(vehicle, VehicleControl.GeyVehicle(vehicle.Board));
+            Assert.AreEqual(vehicle, VehicleControl.GetVehicleInside(vehicle.Board));
         }
+
+        // testar a entrada de um veiculo no estacionamento
+        [TestMethod]
+        public void EntryTest()
+        {
+            DateTime initialDateControl = new DateTime(2017, 1, 1, 0, 0, 0);
+            DateTime finalDateControl = new DateTime(2017, 12, 15, 23, 59, 59);
+            double hourPrice = 5;
+            ValidityControl.AddDateControl(hourPrice, initialDateControl, finalDateControl);
+
+            string board = "ABC 1236";
+            DateTime dateIn = new DateTime(2017, 1, 1, 2, 0, 0);
+            VehicleControl.Entry(board, dateIn);
+
+            // deu entrada em um carro no estacionamento, não tem data de saida
+            VehicleEntrance vehicleInside = VehicleControl.GetVehicleInside(board);
+            Assert.IsTrue(vehicleInside.Board == board && vehicleInside.InvalidDatetime(vehicleInside.DateOut));
+            
+            // saida do estacionamento
+            VehicleControl.Out(vehicleInside.Board, new DateTime(2017, 1, 1, 2, 30, 0));
+
+            VehicleControl.DeleteVehicleByID(vehicleInside.ID);
+
+
+        }
+
     }
 
     

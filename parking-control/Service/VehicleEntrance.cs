@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Web;
+using parking_control.Models;
 using parking_control.Service.Model;
 
 namespace parking_control.Service
@@ -24,20 +25,23 @@ namespace parking_control.Service
             HourPrice = ValidityControl.GetPriceByDate(dateIn);
         }
 
-        public VehicleEntrance(int id, double hourPrice, string board, DateTime dateIn, DateTime dateOut)
-        {
-            ID = id;
-            HourPrice = hourPrice;
-            Board = board;
-            DateIn = dateIn;
-            DateOut = dateOut;            
-        }
-
         public int ID { get; set; }
         public double HourPrice { get; set; }
         public string Board { get; private set; }
         public DateTime DateIn { get; set; }
-        public DateTime DateOut { get; set; }
+
+        private DateTime dateOut = new DateTime();
+        public DateTime DateOut
+        {
+            get { return dateOut; }
+            set
+            {
+                if (DateTime.Compare(value, DateIn) > -1)
+                    dateOut = value;
+                else
+                    throw new DateOutEarlierThanDateIn();
+            }
+        }
         private double priceCharged = 0;
         public double PriceCharged
         {
@@ -69,7 +73,7 @@ namespace parking_control.Service
             return HourPrice * diff.Hours;
         }               
 
-        private bool InvalidDatetime(DateTime time)
+        public bool InvalidDatetime(DateTime time)
         {
             return (time.Year == 1 && time.Month == 1 && time.Day == 1 && time.Hour == 0 && time.Minute == 0 && time.Second == 0);
         }
@@ -95,37 +99,70 @@ namespace parking_control.Service
 
     }
 
+    public class DateOutEarlierThanDateIn : Exception
+    {
+    }
+
     public class VehicleControl
     {
-        private static Dictionary<string, VehicleEntrance> dictVehicle = new Dictionary<string, VehicleEntrance>();
+        private static List<VehicleEntrance> listVehicle = new List<VehicleEntrance>();
 
         public static void Entry(string board, DateTime initialDate)
         {
+            try
+            {
+                VehicleEntrance tmp = VehicleEntranceModel.Select(board);
+                if (!tmp.InvalidDatetime(tmp.DateOut))
+                { // veiculo já está no estacionamento
+                    throw new VehicleIsInside();
+                }
+            }
+            catch (NotExecuteCommandSql e)
+            {
+            }
+            
             VehicleEntrance entrance = new VehicleEntrance(board, initialDate);
             AddVehicle(entrance);
+            UpdateListDatesFromDB();
         }
-        
+
+        public static void Out(string board, DateTime finalDate)
+        {
+            VehicleEntrance ve = GetVehicleInside(board);
+            ve.DateOut = finalDate;
+            VehicleEntranceModel.Update(ve);
+            UpdateListDatesFromDB();
+        }
+
         public static void AddVehicle(VehicleEntrance vehicle)
         {
             VehicleEntranceModel.Insert(vehicle);
-            dictVehicle.Add(vehicle.Board, vehicle);
+            listVehicle.Add(vehicle);
         }
 
-        public static VehicleEntrance GeyVehicle(string board)
+        // DateOut é null
+        public static VehicleEntrance GetVehicleInside(string board)
         {
-            return dictVehicle[board];
+            return listVehicle.Where((VehicleEntrance ve) => { return board == ve.Board && ve.InvalidDatetime(ve.DateOut); }).First();            
         }
 
-        public static Dictionary<string, VehicleEntrance> GetDictVehicles()
+        public static List<VehicleEntrance> GetListVehicles()
         {
-            return dictVehicle;
+            return listVehicle;
         }
 
-        public static void UpdateDictDatesFromDB()
+        public static void UpdateListDatesFromDB()
         {
-            dictVehicle = VehicleEntranceModel.SelectAll();
+            listVehicle = VehicleEntranceModel.SelectAll();
         }
 
+        public static void DeleteVehicleByID(int id)
+        {
+            VehicleEntranceModel.DeleteByID(id);
+        }
     }
 
+    public class VehicleIsInside : Exception
+    {
+    }
 }

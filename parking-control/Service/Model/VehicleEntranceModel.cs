@@ -36,12 +36,15 @@ namespace parking_control.Service.Model
                         throw new NotExecuteCommandSql("Erro na leitura de uma data do banco ou a placa do veiculo não existe na base");
 
                     int id = reader.GetInt32(0);
-                    double hourPrice = reader.GetDouble(1);                    
+                    double hourPrice = reader.GetDouble(1);
                     DateTime dateTimeInitial = reader.GetDateTime(3);
                     DateTime dateTimeFinal = reader.GetDateTime(4);
                     double priceCharged = reader.GetDouble(5);
                     vehicle = new VehicleEntrance(id, vehicleBoard, dateTimeInitial);
-                    vehicle.DateOut = dateTimeFinal;
+                    if (!vehicle.InvalidDatetime(dateTimeFinal))
+                    {
+                        vehicle.DateOut = dateTimeFinal;
+                    }                    
                     vehicle.HourPrice = hourPrice;
                     vehicle.PriceCharged = priceCharged;
                 }
@@ -69,17 +72,19 @@ namespace parking_control.Service.Model
                     DateTime dateTimeFinal = reader.GetDateTime(4);
                     double priceCharged = reader.GetDouble(5);
                     vehicle = new VehicleEntrance(id, board, dateTimeInitial);
-                    vehicle.DateOut = dateTimeFinal;
                     vehicle.HourPrice = hourPrice;
-                    vehicle.PriceCharged = priceCharged;
+                    if (!vehicle.InvalidDatetime(dateTimeFinal))
+                    {
+                        vehicle.DateOut = dateTimeFinal;
+                    }
                 }
             }
             return vehicle;
         }
 
-        public static Dictionary<string, VehicleEntrance> SelectAll(int limit = 1000)
+        public static List<VehicleEntrance> SelectAll(int limit = 1000)
         {
-            Dictionary<string, VehicleEntrance> dict = new Dictionary<string, VehicleEntrance>();
+            List<VehicleEntrance> list = new List<VehicleEntrance>();
             string sql = string.Format("SELECT * FROM VehicleEntrance LIMIT {0}", limit);
             using (MySqlCommand command = new MySqlCommand(sql, ConnectMysql.GetInstance()))
             {
@@ -92,11 +97,17 @@ namespace parking_control.Service.Model
                         string board = reader.GetString(2);
                         DateTime dateIn = reader.GetDateTime(3);
                         DateTime dateOut = reader.GetDateTime(4);
-                        dict[board] = new VehicleEntrance(id, hourPrice, board, dateIn, dateOut);                        
+                        VehicleEntrance ve = new VehicleEntrance(id, board, dateIn);
+                        ve.HourPrice = hourPrice;
+                        if (!ve.InvalidDatetime(dateOut))
+                        {
+                            ve.DateOut = dateOut;
+                        }                        
+                        list.Add(ve);
                     }
                 }
             }
-            return dict;
+            return list;
         }
 
         public static void Update(VehicleEntrance vehicle)

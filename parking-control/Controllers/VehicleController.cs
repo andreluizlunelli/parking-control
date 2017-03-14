@@ -11,6 +11,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using parking_control.Models;
 using parking_control.Service;
+using parking_control.Service.Model;
 
 namespace parking_control.Controllers
 {    
@@ -21,7 +22,7 @@ namespace parking_control.Controllers
         [AllowAnonymous]
         public ActionResult Index(string returnUrl)
         {
-            Service.VehicleControl.UpdateDictDatesFromDB();
+            Service.VehicleControl.UpdateListDatesFromDB();
             return View();
         }
 
@@ -61,6 +62,68 @@ namespace parking_control.Controllers
                 return View(model);
             }
             
+            return RedirectToAction("Index");
+        }
+
+        [AllowAnonymous]
+        public ActionResult Update(int id)
+        {
+            VehicleUpdateViewModel model = new VehicleUpdateViewModel();
+            VehicleEntrance vehicle = VehicleEntranceModel.Select(id);
+            model.HourPrice = vehicle.HourPrice.ToString().Replace(".", ",");
+            model.Board = vehicle.Board;
+            model.InitialDate = vehicle.DateIn;
+            model.FinalDate = vehicle.DateOut;
+            return View(model);
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Update(VehicleUpdateViewModel model, int id)
+        {
+            bool haveErrors = false;            
+            if (!model.DateValid(model.FinalDate))
+            {
+                ModelState.AddModelError("data", "Data final inválida");
+                haveErrors = true;
+            }
+            if (haveErrors)
+                return View(model);
+
+            try
+            {
+                Service.VehicleControl.Out(model.Board, model.InitialDate);
+            }
+            catch (NotFoundDateControl e)
+            {
+                ModelState.AddModelError("data", "Não foi encontrado um período vigente para associar a data ao preço cobrado. Adicione um Valor Praticado.");
+                return View(model);
+            }
+
+            return RedirectToAction("Index");
+        }
+
+        [AllowAnonymous]
+        public async Task<ActionResult> Delete(VehicleUpdateViewModel model, int id)
+        {
+            bool haveErrors = false;
+            if (id == 0)
+            {
+                haveErrors = true;
+                ModelState.AddModelError("data", "Chave primária inválida");
+            }
+            if (haveErrors)
+                return View(model);
+
+            try
+            {
+                Service.VehicleControl.DeleteVehicleByID(id);
+            }
+            catch (NotFoundIDEntity e)
+            {
+            }
+
             return RedirectToAction("Index");
         }
     }

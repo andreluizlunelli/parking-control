@@ -14,7 +14,7 @@ namespace parking_control.Models
 
         [Required]
         [Display(Name = "InitialDate")]
-        public DateTime InitialDate { get; set; }
+        public string InitialDate { get; set; }
 
         public bool DateValid(DateTime time)
         {
@@ -26,7 +26,7 @@ namespace parking_control.Models
     {
         [Required]
         [Display(Name = "FinalDate")]
-        public DateTime FinalDate { get; set; }
+        public string FinalDate { get; set; }
 
         // disabled
         [Required]        
@@ -36,7 +36,7 @@ namespace parking_control.Models
         // disabled
         [Required]
         [Display(Name = "InitialDate")]
-        public DateTime InitialDate { get; set; }
+        public string InitialDate { get; set; }
 
         // disabled
         [Required]

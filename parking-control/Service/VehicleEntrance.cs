@@ -94,7 +94,7 @@ namespace parking_control.Service
 
         public override string ToString()
         {
-            return string.Format("ID:{0}, Preço da hora:{1}, Hora Início:{2}, Hora Final:{3}, Preço final:{4}", ID, HourPrice, ToBRDatetime(DateIn), ToBRDatetime(DateOut), PriceCharged);
+            return string.Format("ID:{0}, Placa: {1}, Hora Início:{2}, Hora Final:{3}, Preço final:{4}, Preço da hora:{5}", ID, Board, ToBRDatetime(DateIn), ToBRDatetime(DateOut), PriceCharged, HourPrice);
         }
 
     }

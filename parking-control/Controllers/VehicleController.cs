@@ -44,7 +44,8 @@ namespace parking_control.Controllers
                 ModelState.AddModelError("data", "Placa do carro não pode ter valor vazio");
                 haveErrors = true;
             }
-            if (!model.DateValid(model.InitialDate))
+            DateTime tmpDate = DateTime.ParseExact(model.InitialDate, "dd/MM/yyyy HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
+            if (!model.DateValid(tmpDate))
             {
                 ModelState.AddModelError("data", "Data inicial inválida");
                 haveErrors = true;
@@ -54,7 +55,7 @@ namespace parking_control.Controllers
 
             try
             {
-                Service.VehicleControl.Entry(model.Board, model.InitialDate);
+                Service.VehicleControl.Entry(model.Board, tmpDate);
             }
             catch (NotFoundDateControl e)
             {
@@ -72,8 +73,8 @@ namespace parking_control.Controllers
             VehicleEntrance vehicle = VehicleEntranceModel.Select(id);
             model.HourPrice = vehicle.HourPrice.ToString().Replace(".", ",");
             model.Board = vehicle.Board;
-            model.InitialDate = vehicle.DateIn;
-            model.FinalDate = vehicle.DateOut;
+            model.InitialDate = vehicle.DateIn.ToString("dd/MM/yyyy HH:mm:ss");
+            model.FinalDate = vehicle.DateOut.ToString("dd/MM/yyyy HH:mm:ss"); ;
             return View(model);
         }
 
@@ -82,18 +83,18 @@ namespace parking_control.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Update(VehicleUpdateViewModel model, int id)
         {
-            bool haveErrors = false;            
-            if (!model.DateValid(model.FinalDate))
+            bool haveErrors = false;
+            DateTime tmpDate = DateTime.ParseExact(model.FinalDate, "dd/MM/yyyy HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
+            if (!model.DateValid(tmpDate))
             {
                 ModelState.AddModelError("data", "Data final inválida");
                 haveErrors = true;
             }
             if (haveErrors)
-                return View(model);
-
+                return View(model);            
             try
             {
-                Service.VehicleControl.Out(model.Board, model.InitialDate);
+                Service.VehicleControl.Out(model.Board, tmpDate);
             }
             catch (NotFoundDateControl e)
             {

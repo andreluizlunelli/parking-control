@@ -155,8 +155,6 @@ namespace parking_control.Tests.Service
             VehicleControl.Out(vehicleInside.Board, new DateTime(2017, 1, 1, 2, 30, 0));
 
             VehicleControl.DeleteVehicleByID(vehicleInside.ID);
-
-
         }
 
     }

@@ -11,13 +11,18 @@
         <br /><br />
     </div>
     <div class="col-md-12">
-        <section id="listdates">
+        <section id="listIndex">
             <ul>
                 @foreach (VehicleEntrance item in VehicleControl.GetListVehicles())
                 {
                     <li>
                         @item.ToString()
-                        @Html.ActionLink("[MARCAR SAÍDA]", "Update", "Vehicle", new { id = item.ID }, null)
+                        @{
+                            if (item.InvalidDatetime(item.DateOut))
+                            {
+                                @Html.ActionLink("[MARCAR SAÍDA]", "Update", "Vehicle", new {id = item.ID}, null);
+                            }                            
+                        }                        
                         @Html.ActionLink("[EXCLUIR]", "Delete", "Vehicle", new { id = item.ID }, new { @class = "delete-index" })
                     </li>
                 }
@@ -28,4 +33,5 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/parking-control")
 }
